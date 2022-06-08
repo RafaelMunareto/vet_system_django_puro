@@ -1,0 +1,36 @@
+
+{% extends 'layout/principal.html' %}
+{% load static %}
+{% load formata %}
+{% load materializecss %}
+{% load render_table from django_tables2 %}
+{% load querystring from django_tables2 %}
+{% block content %}
+
+    <div class="d-flex justify-content-between">
+        {% include 'partials/_voltar_pag.html'%}
+        <a href="historico_prescricao/0" class='btn {{ cor }} white-text bold ml-1 col s2 mr-1 ' style='min-width:10rem' >HISTÓRICO</a>
+    </div>
+
+    <div class='container ml-4'>
+        <form method='POST'  action="{% url 'prescricao.store' %}">
+            {% csrf_token %} 
+            <div class="row">
+                {{form.paciente | materializecss:'input-field col s7 mr-1'}}
+                {{form.prescricao | materializecss:'input-field col s7 mr-1'}}
+            </div>
+
+            <div class="row">
+                {{form.veterinario | materializecss:'input-field col s6'}}
+                <div class="col s2 ml-1" style='margin-top:0.5rem'>
+                    {% include 'partials/_adicionar.html' with url='veterinario.adicionar' %}
+                </div>
+            </div>
+        
+            <div class="input-field d-flex justify-content-start ml-1">
+                <input type='submit' class='btn {{ cor }} white-text bold d-flex justify-content-center' name='btn_salvar' value='SALVAR' style='max-width:10rem'>
+            </div> 
+        </form>
+            
+    </div>
+{% endblock %}

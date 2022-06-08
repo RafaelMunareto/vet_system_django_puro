@@ -1,0 +1,34 @@
+{% extends 'layout/principal_login.html' %}
+{% load static %}
+{% load materializecss %}
+{% block content %}
+
+    <div class='container'>
+
+        <div id="login-page" class="row mt-4 mb-4">
+            <div class="col s12 z-depth-6 card-panel">
+                <form class="login-form mt-1" method='POST'  action="{% url url_action %}">
+                    {% csrf_token %} 
+                  
+                    {{form.username | materializecss:'icon=person'}}
+                    {{form.senha | materializecss:'icon=lock'}}
+
+                    <div class="row margin-1">
+                        <input id='button-logar' type='submit' class="btn col s12  white-text bold" value='Login'>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s6 m6 l6">
+                            <p class="margin medium-small"><a href="{% url 'login.cadastro' %}">Cadastrar</a></p>
+                        </div>
+                        <div class="input-field col s6 m6 l6">
+                            <p class="margin right-align medium-small"><a href="#">Esqueceu a senha?</a></p>
+                        </div>          
+                    </div>
+            
+                </form>
+            </div>
+        </div>
+
+    </div>
+{% endblock %}
+    

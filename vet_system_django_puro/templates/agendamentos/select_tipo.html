@@ -1,0 +1,15 @@
+{% load static %}
+{% load formata %}
+
+<div class='d-flex justify-content-start  mr-1 ml-2'>
+    <select class="comite_select"  onchange="window.location='/agendamentos/' + this.value+'/{{ periodo }}'" >
+        <option value="0"  selected>TODOS OS TIPOS</option>
+        {% for linha in dados %}
+            {% if linha.tipo == tipo %}
+                <option value="{{ linha.tipo }}"  selected >{{ linha.tipo | formata_tipo }} </option>
+            {% else %}
+                <option value="{{ linha.tipo }}">{{ linha.tipo | formata_tipo }} </option>
+            {% endif %}
+        {% endfor %}
+    </select>
+</div>

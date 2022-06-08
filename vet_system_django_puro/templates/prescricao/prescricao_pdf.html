@@ -1,0 +1,71 @@
+{% extends "easy_pdf/base.html" %}
+{% load materializecss %}
+{% load formata %}
+{% block extra_style %}
+<style type="text/css">
+    @font-face { font-family: Lato; src: url(fonts/Lato-Reg.ttf); }
+    body {
+        font-family: "Lato", "Helvetica", "sans-serif";
+        color: #333333;
+    }
+</style>
+{% endblock %}
+{% block content %}
+    <meta http-equiv="content-type" content="text/html;charset=utf-8" />
+    <title>FATURA {{ prescricao.paciente }}</title>
+    <div id="content">
+        <br>
+        <br>
+        <br>
+        <br>
+        
+        <div class="main" style='text-align: left; margin-top:10rem; font-size:130%'>
+        
+            <div style='display:flex; flex-direction: flex-column;'>
+                <span>Tutor:<span style='font-weight: bold'> {{ prescricao.paciente.tutor }}</span></span>
+                <br>
+                <span>CPF:<span style='font-weight: bold'> {{ prescricao.paciente.tutor.cpf }}</span></span>
+                <br>
+                <span>Paciente:<span style='font-weight: bold'> {{ prescricao.paciente }}</span></span>
+                <br>
+                <span>Raça:<span style='font-weight: bold'> {{ prescricao.paciente.raca }}</span></span>
+                <br>
+                <span>Idade:<span style='font-weight: bold'> {{ prescricao.paciente.idade }}</span></span>
+                <br>
+                <span>Data:<span style='font-weight: bold'> {{ prescricao.data_cadastro }}</span></span>  
+            </div>
+
+            <div style='display:flex; flex-direction: flex-column;'>
+                <br>
+                <br>
+                <span style='font-weight: bold'>PRESCRIÇÃO:</span>
+                <br>
+                <br>
+                <br>
+                <br>    
+                <textarea style='margin-left:3rem' name="" id="" cols="30" rows="30">{{ prescricao.prescricao }}</textarea>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+            </div>
+            <br>
+            <br>
+            <br>
+            <div style='display:flex; flex-direction: flex-column;'>
+                <span style='font-weight: bold'> {{ prescricao.vet.nome }}</span>
+                <br>
+                <span style='font-weight: bold'>Médico Veterinário</span>
+                <br>
+                <span style='font-weight: bold'> {{ prescricao.vet.crmv }}  {{ prescricao.vet.uf }}</span> 
+                <br>
+            </div>
+
+        </div>
+
+
+
+    </div>
+
+{% endblock %}

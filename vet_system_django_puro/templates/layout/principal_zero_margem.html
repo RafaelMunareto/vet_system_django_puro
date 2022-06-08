@@ -1,0 +1,33 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+
+    {% include 'layout/cabecalho.html' %}
+    {% include 'layout/header.html' %}
+    {% include 'layout/menu.html' %}
+
+    <body class='animated fadeIn'>
+        
+        <h3 class="white-text {{ cor }} bold pl-1 mb-0">{{ titulo }} <img style='width:2.3rem' src="{% static img %}"></h3>
+        <div class='preloader margin-0 padding-0 min-w-100 display-none animated fadeIn' >
+            <div class="progress margin-0 min-w-100 orange lighten-4">
+                <div class="indeterminate orange"></div>
+            </div>
+        </div>
+        {% include 'partials/_message.html' %}
+        <div class='container-fluid' style='min-height: 25rem'>
+            {% block content %}{% endblock %}
+        </div>
+    </body>
+    
+{% include 'layout/footer.html' %}
+   
+</html>
+
+{% include 'layout/rodape.html' %}
+
+{% block scripts %}{% endblock %}
+
+
+

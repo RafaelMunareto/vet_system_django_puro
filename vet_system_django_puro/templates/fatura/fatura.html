@@ -1,0 +1,25 @@
+{% extends 'layout/principal.html' %}
+{% load static %}
+{% load materializecss %}
+{% block content %}
+
+    {% include 'partials/_voltar_pag.html'%}
+
+    <div class='container'>
+
+        <form method='POST'  action="{% url url_action id %}">
+            {% csrf_token %} 
+            <div class='row'>
+                {{form.produto | materializecss:'input-field col s4 mr-1'}}
+                {{form.qtd_produto | materializecss:'input-field col s1'}}
+                {{form.servico | materializecss:'input-field col s4 mr-1'}}  
+                {{form.qtd_servico | materializecss:'input-field col s1'}} 
+                <div class="input-field col s2">
+                    <input type='submit' class='btn {{ cor }} white-text bold ml-1 d-flex justify-content-center' id='btn_salvar_servico' value='INCLUIR' style='max-width:10rem'>
+                </div>     
+            </div>
+        </form>
+    </div>
+
+{% endblock %}
+    

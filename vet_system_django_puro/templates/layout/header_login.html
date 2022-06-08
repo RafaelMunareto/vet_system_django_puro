@@ -1,0 +1,19 @@
+
+{% load static %}
+
+<header>
+    <nav class="gradiente-base animated fadeIn">
+        <a href="{% url 'home' %}" class="brand-logo black-white left"><img src="{% static 'img/outros/logo.png' %}" alt="VET SYSTEM"></a>
+        <ul id="nav-mobile" class="right hide-on-med-and-down">
+            {% if user.is_authenticated %}
+                <li><a href="#" class="white-text bold">{{ user.username }}</a></li>
+                <li><a href="{% url 'logout' %}" class="white-text bold">SAIR</a></li>
+            {% else %}
+                <li><a href="{% url 'login.cadastro' %}" class="white-text bold">CADASTRO</a></li>
+                <li><a href="{% url 'login' %}" class="white-text bold">LOGIN</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+    
+
+</header>

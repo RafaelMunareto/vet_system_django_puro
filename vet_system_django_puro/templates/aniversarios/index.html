@@ -1,0 +1,91 @@
+
+{% extends 'layout/principal.html' %}
+{% load static %}
+{% load materializecss %}
+{% load formata %}
+{% load render_table from django_tables2 %}
+{% load querystring from django_tables2 %}
+{% block content %}
+
+    {% include 'partials/_voltar_pag.html'%}
+    
+    <div class='row'>
+     
+        <div class="flex-column col s3">
+            <h5 class='teal-text bold ml-2 mb-0'>ANIVERSÁRIOS TUTOR</h5>
+            {{form.aniversarios_tutor | materializecss:'input-field col s1  ml-2 size90 center'}}  
+        </div>
+        
+        <div class="col s9">
+            <div id='loading_tutor' class='d-flex justify-center '>{% include 'partials/_loading.html' %}</div>
+            <div class="container display-none" id='tutor_result'></div>
+        </div>
+    </div>
+
+    <div class='row'>
+        <div class="flex-column col s3">
+            <h5 class='teal-text bold ml-2 mb-0'>ANIVERSÁRIOS PET</h5>
+            {{form.aniversarios_pet | materializecss:'input-field col s1 ml-2 size90 center'}}  
+        </div>
+        <div class="col s9">
+            <div id='loading_pet' class='d-flex justify-center'>{% include 'partials/_loading.html' %}</div>
+            <div class="container display-none" id='pet_result'></div>
+        </div>
+    </div>
+
+    {% include 'partials/_modal_detalhes.html' with modal='contatos' nome='CONTATOS' result='contato' %}
+    {% include 'partials/_modal_detalhes.html' with modal='enderecos' nome='ENDEREÇOS' result='endereco' %}
+
+
+    <input type="hidden" id='data_atual' value='{{ data }}'>
+
+
+{% endblock %}
+
+{% block scripts %}
+    <script> 
+
+        var data_atual = $('#data_atual').val();
+        
+        if($("#aniversarios_tutor").val() == 0){
+            $('#tutor_result').html('').load("/aniversarios_tutor/" + data_atual, function(){
+                $("#tutor_result").removeClass('display-none').addClass('display-block')
+                $("#loading_tutor").removeClass('d-flex').addClass('display-none' )
+            });
+            $("#aniversarios_tutor").val(data_atual); 
+        }
+
+        if($("#aniversarios_pet").val() == 0){
+            $('#pet_result').html('').load("/aniversarios_pet/" + data_atual, function(){
+                $("#pet_result").removeClass('display-none').addClass('display-block')
+                $("#loading_pet").removeClass('d-flex display-flex').addClass('display-none')
+            });
+            $("#aniversarios_pet").val(data_atual); 
+        }
+       
+        $(document).ready(function(){
+          
+            $("#aniversarios_tutor").change(function(){
+                $("#loading_tutor").removeClass('display-none').addClass('d-flex display-flex')
+                var data = $(this).val();
+                $('#tutor_result').html('').load("/aniversarios_tutor/" + data, function(){
+                    $("#tutor_result").removeClass('display-none').addClass('display-block')
+                    $("#loading_tutor").removeClass('d-flex display-flex').addClass('display-none')
+                });
+            });
+            
+
+            $("#aniversarios_pet").change(function(){
+                $("#loading_pet").removeClass('display-none').addClass('d-flex display-flex')
+                var data = $(this).val();
+                $('#pet_result').html('').load("/aniversarios_pet/" + data, function(){
+                    $("#pet_result").removeClass('display-none').addClass('display-block')
+                    $("#loading_pet").removeClass('d-flex display-flex').addClass('display-none')
+                });
+            });
+            
+        });
+        
+     
+    </script>
+{% endblock %}

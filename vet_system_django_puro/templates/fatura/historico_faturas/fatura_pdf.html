@@ -1,0 +1,63 @@
+{% extends "easy_pdf/base.html" %}
+{% load materializecss %}
+{% load formata %}
+{% block extra_style %}
+<style type="text/css">
+    @font-face { font-family: Lato; src: url(fonts/Lato-Reg.ttf); }
+    body {
+        font-family: "Lato", "Helvetica", "sans-serif";
+        color: #333333;
+    }
+</style>
+{% endblock %}
+{% block content %}
+    <meta http-equiv="content-type" content="text/html;charset=utf-8" />
+    <title>FATURA {{ fatura.paciente }}</title>
+    <div id="content">
+        <br>
+        <br>
+        <br>
+        <br>
+        
+        <div class="main" style='text-align: left; margin-top:10rem; font-size:130%'>
+        
+            <div style='display:flex; flex-direction: flex-column;'>
+                <span>Tutor:<span style='font-weight: bold'> {{ fatura.tutor }}</span></span>
+                <br>
+                <span>CPF:<span style='font-weight: bold'> {{ fatura.tutor.cpf }}</span></span>
+                <br>
+                <span>Paciente:<span style='font-weight: bold'> {{ fatura.paciente }}</span></span>
+                <br>
+                <span>Raça:<span style='font-weight: bold'> {{ fatura.paciente.raca }}</span></span>
+                <br>
+                <span>Idade:<span style='font-weight: bold'> {{ fatura.paciente.idade }}</span></span>
+                <br>
+                <span>Data:<span style='font-weight: bold'> {{ fatura.data_cadastro }}</span></span>  
+            </div>
+
+                <table>
+                    <thead>
+                        <th style='text-align: center;'>COD</th>
+                        <th style='text-align: left;'>PRODUTOS</th>
+                        <th style='text-align: center;'>QTD</th>
+                        <th style='text-align: center;'>VALOR</th>
+                    </thead>
+                    <tbody>
+                        {% for linha in faturas %}
+                            <tr>
+                                <td style='text-align: center;'>{{ linha.cod }}</td>
+                                <td style='text-align: left;'>{{ linha.produto }}</td>
+                                <td style='text-align: center;'>{{ linha.qtd }}</td>
+                                <td style='text-align: center;'>R$ {{ linha.valor | real_br_money_mask }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                
+            <div style='display:flex'>
+                <span style='font-size: 120%;'>TOTAL:<span style='font-weight: bold; font-size:120%'> R$ {{ fatura.total | real_br_money_mask }}</span></span>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,65 @@
+
+{% load static %}
+
+<header>
+    <nav class="gradiente-base animated fadeIn">
+        <a href="{% url 'home' %}" class="brand-logo black-white left"><img src="{% static 'img/outros/logo.png' %}" alt="VET SYSTEM"></a>
+        <ul id="nav-mobile" class="right hide-on-med-and-down">
+            <li>
+                <div class="nav-wrapper">
+                    <form>
+                      <div class="input-field" style='height: 4rem;'>
+                        <input id="search" type="search" class='transparent' style='min-width:15rem' required>
+                        <label class="label-icon" for="search"><i class="material-icons">search</i></label>
+                        <i id='close' class="material-icons">close</i>
+                      </div>
+                    </form>
+                </div>
+            </li>
+            {% if user.is_authenticated %}
+                <li><a href="#" class="white-text bold">{{ user.username }}</a></li>
+                <li><a href="{% url 'logout' %}" class="white-text bold">SAIR</a></li>
+            {% else %}
+                <li><a href="{% url 'login.cadastro' %}" class="white-text bold">CADASTRO</a></li>
+                <li><a href="{% url 'login' %}" class="white-text bold">LOGIN</a></li>
+            {% endif %}
+            
+            <li><a href="#" data-target="slide-out" class="sidenav-trigger show-on-large white-text gradiente-amarelo menu"> MENU </a></li>
+        </ul>
+    </nav>
+    
+    <div id='buscador_result'></div>
+
+</header>
+
+{% block scripts %}
+
+<script>
+
+    $(document).ready(function(){
+        
+        $("#close").click(function(){
+            $('#search').val('')
+            $('#buscador_result').html('')
+        });
+
+        $("#search").keyup(function(){
+            var search = this.value 
+            if (search.length >=3){
+                if(search == ''){
+                    $('#buscador_result').html('')
+                }else{
+                    $('#buscador_result').html('').load("{% url 'busca' %}?search=" + search);
+                }
+            }
+    
+        });
+
+    });
+
+</script>
+
+{% endblock %}
+
+
+  

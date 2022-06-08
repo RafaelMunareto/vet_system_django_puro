@@ -1,0 +1,24 @@
+{% load static %}
+{% load formata %}
+
+<div class="d-flex">
+    <div class="d-flex justify-content-around">
+           <table style='min-width: 35rem;'>
+            {% for linha in pacientes %}
+                <tr class='size95'>
+                    <td>{{linha.especie | icone_especie }}</td>
+                    <td class='bold mr-1'>{{linha.nome}}</td>
+                    <td>{{linha.raca}}</td>
+                    <td><a title='Detalhes'href="{% url 'pacientes.detalhes' linha.id  %}"><i class='fas fa-paw fa-2x teal-text mr-1 ml-1'></i></a></td>
+                    <td><a title='Tutor'href="{% url 'clientes.detalhes' linha.tutor.id  %}"><i class='fas fa-user-tie fa-2x teal-text mr-1'></i></a></td>
+                    <td><a title='Agendamentos'href="{% url 'agendamentos.adicionar_novo' linha.id  %}"><i class='fas fa-calendar-alt fa-2x teal-text mr-1'></i></a></td>
+                    <td><a title='Fatura'href="{% url 'fatura.detalhes' linha.id %}"><i class='fas fa-receipt fa-2x teal-text mr-1'></i></a></td>
+                </tr>
+            {% endfor %} 
+           </table>
+    </div>
+</div>
+
+
+
+

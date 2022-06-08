@@ -1,0 +1,144 @@
+
+{% extends 'layout/principal.html' %}
+{% load static %}
+{% load formata %}
+{% load materializecss %}
+{% load render_table from django_tables2 %}
+{% load querystring from django_tables2 %}
+{% block content %}
+
+    <div class="row ml-2">
+        {% if id > 0 %}
+            <input type="hidden" id='cliente' value='{{ id }}'>
+        {% else %}
+            {{form.paciente | materializecss:'input-field col s5 mr-1'}}
+        {% endif %}
+    </div>  
+    {% csrf_token %} 
+    <div class="row center">
+        <div id='loading' class='display-none'>{% include 'partials/_loading.html' %}</div>
+    </div>
+    <div class="d-flex justify-center">
+        <img id='img_favicon_big' src="{% static 'img/outros/favicon_big.png' %}" style='max-width:15rem' alt="VET SYSTEM">
+    </div>
+    <div class="flex-column"  id='produto_servico'>
+        <div class="d-flex row ml-2 mr-2 mb-0 mt-0 card border-radius-10">
+            {{form.servico | materializecss:'input-field col s4 mr-1'}}  
+            {{form.qtd_servico | materializecss:'input-field col s1'}} 
+            <div class="input-field col s2">
+                <input type='submit' class='btn teal darken-2 white-text bold ml-1 d-flex justify-content-center' id='btn_salvar_servico' value='INCLUIR' style='max-width:10rem'>
+            </div>    
+            {{form.produto | materializecss:'input-field col s4 mr-1'}}
+            {{form.qtd_produto | materializecss:'input-field col s1'}}
+            <div class="input-field col s2">
+                <input type='submit' class='btn teal darken-2 white-text bold ml-1 d-flex justify-content-center btn_salvar' id='btn_salvar_produto' value='INCLUIR' style='max-width:10rem'>
+            </div>  
+        </div>
+    </div>
+    <h5 id='message_error' class='ml-2 white-text gradiente-red opacity-05 white-text center padding-05 mb-0 animated flipInX display-none border-radius-10'>
+        <i class='fas  fa-exclamation-triangle'></i><span class='vertical-align--text-top'> Dados incorretos, verifique se os campos foram preenchidos! </span></h5>
+    <div id='paciente_result' class='mt-2 ml-2' ></div>
+     
+
+{% endblock %}
+
+
+{% block scripts %}
+
+<script>
+    $(document).ready(function(){
+        
+        if($("#cliente").val() == 0 | $("#cliente").val() == ''){
+            $("#produto_servico").removeClass('flex-column').addClass('display-none');
+        }else{
+            var cliente = $("#cliente").val();
+            $('#paciente_result').html('').load("/fatura/cliente_paciente/"+cliente, function(){
+                $('#img_favicon_big').removeClass('display-block').addClass('display-none');
+                $("#loading").removeClass('display-block').addClass('display-none')
+                $("#produto_servico").removeClass('display-none').addClass('display-block');
+            });
+        }
+
+        $("#cliente").change(function(){
+            var cliente = $(this).val();
+            $('#img_favicon_big').removeClass('display-block').addClass('display-none');
+            $("#loading").removeClass('display-none').addClass('display-block');
+            if(cliente > 0){
+                    $('#paciente_result').html('').load("/fatura/cliente_paciente/"+cliente, function(){
+                    $('#img_favicon_big').removeClass('display-block').addClass('display-none');
+                    $("#loading").removeClass('display-block').addClass('display-none')
+                    $("#produto_servico").removeClass('display-none').addClass('display-block');
+                    $("#message_error_fechar").removeClass('display-block').addClass('display-none')
+                });
+            }else{
+                $('#paciente_result').html('');
+                $('#img_favicon_big').removeClass('display-none').addClass('display-block');
+                $('#produto_servico').removeClass('display-block').addClass('display-none');
+                $("#loading").removeClass('display-block').addClass('display-none')
+            }
+        });
+
+            
+        $('#btn_salvar_produto').click(function(){
+            var cliente = $('#cliente').val();
+            var produto = $('#produto').val();
+            var qtd_produto = $('#qtd_produto').val();
+            if (produto != 0 && qtd_produto == ''){
+                $("#message_error").removeClass('display-none').addClass('display-block')
+            }else{
+                $("#message_error").removeClass('display-block').addClass('display-none')
+                $("#message_error_fechar").removeClass('display-block').addClass('display-none')
+                const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+                $("#loading_table").removeClass('display-none').addClass('display-block')
+                $("#table_fatura").removeClass('display-block').addClass('display-none')
+                $.ajax({
+                    url: "{% url 'fatura.store' %}",
+                    headers: {'X-CSRFToken': csrftoken},
+                    type: 'POST',
+                    data: {
+                        'tipo':'produto',
+                        'produto': produto,
+                        'qtd_produto': qtd_produto,
+                        'cliente':cliente
+                    }
+                }).done(function() {
+                    $('#paciente_result').load("/fatura/cliente_paciente/"+cliente)
+                    $("#loading_table").removeClass('display-block').addClass('display-none')
+                });
+            }
+        });
+        
+
+        $('#btn_salvar_servico').click(function(){
+            var cliente = $('#cliente').val();
+            var servico = $('#servico').val();
+            var qtd_produto = $('#qtd_servico').val();            
+            if (servico != 0 && qtd_servico == ''){
+                $("#message_error").removeClass('display-none').addClass('display-block')
+            }else{
+                $("#message_error").removeClass('display-block').addClass('display-none')
+                $("#message_error_fechar").removeClass('display-block').addClass('display-none')
+                const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+                $("#loading_table").removeClass('display-none').addClass('display-block')
+                $("#table_fatura").removeClass('display-block').addClass('display-none')
+                $.ajax({
+                    url: "{% url 'fatura.store' %}",
+                    headers: {'X-CSRFToken': csrftoken},
+                    type: 'POST',
+                    data: {
+                        'tipo':'servico',
+                        'produto': servico,
+                        'qtd_produto': qtd_produto,
+                        'cliente':cliente
+                    }
+                }).done(function() {
+                    $('#paciente_result').load("/fatura/cliente_paciente/"+cliente)
+                    $("#loading_table").removeClass('display-block').addClass('display-none')
+                });
+            }
+        });
+    });
+
+</script>
+
+{% endblock %}

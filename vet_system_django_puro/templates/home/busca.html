@@ -1,0 +1,23 @@
+{% load static %}
+
+    {% if urls != '' %}
+
+        <div class='animated fadeIn'  style='position:absolute; left:25%; right:30%; top:8%; z-index: 2'>
+            {% for linha in urls %}
+                <a href='{{ linha.urls }}'>
+                    <div class='{{ linha.cor }} d-flex justify-content-start'>
+                        <div class='flex-column align-items margin-1' style='min-width: 10rem'>
+                            <img style='max-width:32px' class='center' src='/static/{{ linha.img }}'>
+                            <span class='white-text bold center' style='max-width:8rem'>{{ linha.nome }}</span>
+                        </div>
+                        <div>
+                            <span class='white-text size90 padding-05'>{{ linha.descricao }}</span>
+                        </div>
+                    </div>
+                </a>
+            {% endfor %}
+        </div>   
+
+    {% endif %}
+
+

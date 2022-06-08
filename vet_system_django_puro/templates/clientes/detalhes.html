@@ -1,0 +1,17 @@
+
+{% extends 'layout/principal.html' %}
+{% load static %}
+{% load render_table from django_tables2 %}
+{% load querystring from django_tables2 %}
+{% block content %}
+
+    {% include 'partials/_voltar_pag.html'%}
+
+    <div class='container mb-4'>
+        {% render_table table %}
+    </div>
+
+    {% include 'partials/_modal_detalhes.html' with modal='contatos' nome='CONTATOS' result='contato' %}
+    {% include 'partials/_modal_detalhes.html' with modal='enderecos' nome='ENDEREÇOS' result='endereco' %}
+
+{% endblock %}

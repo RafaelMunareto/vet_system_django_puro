@@ -1,0 +1,70 @@
+
+{% load static %}
+{% load formata %}
+{% load render_table from django_tables2 %}
+{% load querystring from django_tables2 %}
+{% load materializecss %}
+
+    <div class='container-fluid margin-2'>
+        <div class="row center mt-3">
+             
+            <div class="col s4">
+                <div class="card-panel mt-0">
+                    <span class="blue-grey-text bold center">MENORES QUANTIDADES</span>
+                    <table class='size90 mt-1 table_top'>
+                        <thead >
+                            <th class='center'>COD</th>
+                            <th>PRODUTO</th>
+                            <th class='center'>QTD</th>
+                        </thead>
+                        {% for linha in menor_estoque %}
+                            <tbody>
+                                <td class='center'>{{ linha.produto.id }}</td>
+                                <td class='text-left'>{{ linha.produto }}</td>
+                                <td class='center'>{{ linha.qtd_total }}</td>
+                            </tbody>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+
+            <div class="col s4">
+                <div class="card-panel mt-0">
+                    <span class="blue-grey-text bold center">TOTALIZADOR</span>
+                    <table class='size90 mt-1 table_top'>
+                        <thead class='center'>
+                            <th class='center' >QTD TOTAL</th>
+                            <th class='center' >VALOR TOTAL</th>
+                        </thead>
+                        <tbody>
+                            <td>{{ totalizadores.as_qtd_total__sum }}</td>
+                            <td>{{ totalizadores.as_valor_total__sum }}</td>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+    
+            <div class="col s4">
+                <div class="card-panel mt-0">
+                    <span class="blue-grey-text bold center">MAIORES QUANTIDADES</span>
+                    <table class='size90 mt-1 table_top'>
+                        <thead >
+                            <th class='center'>COD</th>
+                            <th>PRODUTO</th>
+                            <th class='center'>QTD</th>
+                        </thead>
+                        {% for linha in maior_estoque%}
+                            <tbody>
+                                <td class='center'>{{ linha.produto.id }}</td>
+                                <td class='text-left'>{{ linha.produto }}</td>
+                                <td class='center'>{{ linha.qtd_total }}</td>
+                            </tbody>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+  
+    {% include 'estoque/grafico_estoque.html' %}

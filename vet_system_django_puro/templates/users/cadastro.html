@@ -1,0 +1,28 @@
+{% extends 'layout/principal_login.html' %}
+{% load static %}
+{% load materializecss %}
+{% block content %}
+
+    {% include 'partials/_voltar_pag.html'%}
+
+    <section class="container">
+		<div class="row">
+			<article class="col s6 offset-s3">
+				<form method="POST" action="{% url url_action %}">
+					{% csrf_token %} 
+                        {{form.username | materializecss:'icon=person' }}
+                        {{form.nome | materializecss:'icon=perm_identity' }}
+                        {{form.sobrenome | materializecss:'icon=perm_identity' }}
+						{{form.email | materializecss:'icon=email' }}
+                        {{form.senha | materializecss:'icon=lock_outline' }}
+                        {{form.confirma_senha | materializecss:'icon=lock_outline' }}
+					<p class="center-align">
+						<button class="waves-effect waves-light btn bold" type="submit">CADASTRAR</button>
+					</p>
+				</form>
+			</article>
+		</div>
+	</section>
+
+{% endblock %}
+    

@@ -1,0 +1,43 @@
+
+{% extends 'layout/principal.html' %}
+{% load static %}
+{% load formata %}
+{% load materializecss %}
+{% load render_table from django_tables2 %}
+{% load querystring from django_tables2 %}
+{% block content %}
+
+    {% include 'partials/_voltar_pag.html'%}
+    <div class='row d-flex justify-beeteween'>
+        <div class="col s6 mt-2 d-flex left">
+            {{form.paciente | materializecss:'input-field col s9 mr-1'}}
+        </div>
+        <div class='col 6 d-flex justify-content-end mb-1'>
+            <div class='mr-1'>
+                {% include 'partials/_buscar.html' %}
+            </div>
+        </div>
+    </div>
+  
+    <div class='container-fluid margin-2'>
+        {% render_table table %}
+    </div>
+    <a data-id='{{ id }}' id='cliente_id'></a>
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        
+        $('#cliente').val(parseInt($('#cliente_id').attr('data-id')));
+        
+        $("#cliente").change(function(){
+            var cliente = $(this).val();
+            if(cliente > 0){
+                document.location.href ="/historico_fatura/" + cliente;
+                
+            }
+            
+        });
+
+    </script>
+{% endblock %}

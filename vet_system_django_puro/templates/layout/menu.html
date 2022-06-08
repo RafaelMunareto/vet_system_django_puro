@@ -1,0 +1,35 @@
+{% load static %}
+
+<ul id="slide-out" class="sidenav">
+    <li>
+        <div class="user-view d-flex justify-center">
+            <div class="background gradiente-base">
+            </div>
+            <a href="{% url 'home' %}"></a>
+            <a href="{% url 'home' %}"><span class="white-text name bold pl-1 size120"><img src="{% static 'img/outros/logo.png' %}" alt="VET SYSTEM"></span></a>
+            <br>
+            <br>
+        </div>
+    </li>
+    <li><div class="divider"></div></li>
+    <li><a class="subheader">CLIENTES</a></li>
+        {% include 'partials/_linha_menu.html' with rota="/clientes" icone='people' nome='CLIENTES' %}
+        {% include 'partials/_linha_menu.html' with rota="/clientes/adicionar" icone='add_circle' nome='NOVO CLIENTE' %}
+        {% include 'partials/_linha_menu.html' with rota="/aniversarios" icone='cake' nome='ANIVERSÁRIOS' %}
+    <li><a class="subheader">PACIENTES</a></li>
+        {% include 'partials/_linha_menu.html' with rota="/pacientes" icone='pets' nome='PACIENTES' %}
+        {% include 'partials/_linha_menu.html' with rota="/pacientes/adicionar_novo" icone='add_circle' nome='NOVO PACIENTE'%}
+        {% include 'partials/_linha_menu.html' with rota="/fatura" icone='receipt' nome='FATURA' %}
+        {% include 'partials/_linha_menu.html' with rota="/historico_fatura/0" icone='receipt' nome='HIST. FATURA' %}
+        {% include 'partials/_linha_menu.html' with rota="/prescricao" icone='chrome_reader_mode' nome='PRESCRIÇÃO' %}
+        {% include 'partials/_linha_menu.html' with rota="/historico_prescricao/0" icone='chrome_reader_mode' nome='HIST. PRESCRIÇÃO' %}
+    <li><div class="divider"></div></li>
+    <li><a class="subheader">ADMINISTRATIVO</a></li>
+        {% for linha in administrativo %}
+            {% include 'partials/_linha_menu.html' with rota=linha.urls icone=linha.icone nome=linha.nome %}
+        {% endfor %}
+    <li><div class="divider"></div></li>
+    <li><a class="subheader">AGENDAMENTOS</a></li>
+        {% include 'partials/_linha_menu.html' with rota="/agendamentos/0/0" icone='access_time' nome='AGENDAMENTOS' %}
+        {% include 'partials/_linha_menu.html' with rota="/agendamentos/adicionar" icone='add_circle' nome='NOVO AGENDAMENTO' %}
+ </ul>

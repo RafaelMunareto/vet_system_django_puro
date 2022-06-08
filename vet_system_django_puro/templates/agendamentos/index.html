@@ -1,0 +1,36 @@
+
+{% extends 'layout/principal.html' %}
+{% load static %}
+{% load formata %}
+{% load materializecss %}
+{% load render_table from django_tables2 %}
+{% load querystring from django_tables2 %}
+{% block content %}
+
+    {% include 'partials/_voltar_pag.html'%}
+
+    <div class='justify-beeteween container-fluid'>
+        <div class='d-flex justify-content-end mb-1'>
+            <a onclick="window.location='/agendamentos/{{ tipo }}/{{ 0 }}'" class='btn {{cor}} mr-1' style='min-width:8rem'>TODOS</a>
+            <a onclick="window.location='/agendamentos/{{ tipo }}/{{ 1 }}'" class='btn {{cor}} mr-1' style='min-width:8rem'>DIA</a>
+            <a onclick="window.location='/agendamentos/{{ tipo }}/{{ 2 }}'" class='btn {{cor}} mr-1' style='min-width:8rem'>3 DIAS</a>
+            <a onclick="window.location='/agendamentos/{{ tipo }}/{{ 3 }}'" class='btn {{cor}} mr-2' style='min-width:8rem'>MÊS</a>
+            {% include 'agendamentos/select_tipo.html' %}
+            <div class='mr-1'>
+                {% include 'partials/_buscar.html' %}
+            </div>
+            <div class='d-flex'> 
+                {% include 'partials/_adicionar.html' with url=url_add %}
+                {% include 'partials/_export.html' %}
+            </div>
+        </div>
+    </div>
+  
+    <div class='container-fluid margin-2'>
+        {% render_table table %}
+    </div>
+
+    {% include 'partials/_confirmDelete.html' %}
+
+
+{% endblock %}

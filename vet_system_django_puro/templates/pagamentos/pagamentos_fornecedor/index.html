@@ -1,0 +1,74 @@
+
+{% extends 'layout/principal.html' %}
+{% load static %}
+{% load formata %}
+{% load materializecss %}
+{% load render_table from django_tables2 %}
+{% load querystring from django_tables2 %}
+{% block content %}
+
+    {% include 'partials/_voltar_pag_param.html'%}
+
+    <div class='justify-beeteween d-flex container-fluid'>
+        <div class='row container mt-2'>
+            {{form.fornecedor_id | materializecss:'input-field col s6 ml-1 size90'}} 
+            {{form.pagamento_id | materializecss:'input-field col s1 ml-1 size90'}}  
+        </div>
+        <div class="d-flex justify-content-end">
+            {% include 'partials/_button.html' with url="estoque" nome="ESTOQUE" %}
+            {% include 'partials/_button.html' with url="produtos" nome="PRODUTOS" %}
+            {% include 'partials/_buscar.html' %}
+            {% include 'partials/_export.html' %}
+        </div>
+    </div>
+    
+    <div class='container-fluid margin-2'>
+        {% render_table table %}
+        <span class="bold teal-text text-darken-2">
+            TOTAL: 
+            {% if total_valor.as_valor_total__sum != None %}
+                {{ total_valor.as_valor_total__sum }}
+            {% else %}
+                0
+            {% endif %}
+        </span>
+    </div>
+    <a id='data' data-id="{{ data }}"></a>
+    <a id='fornecedor' data-id="{{ id }}"></a> 
+    {% include 'partials/_modal_detalhes.html' with modal='bancarios' nome='DADOS BANCÁRIOS' result='bancario' %}
+    {% include 'partials/_modal_detalhes.html' with modal='contatos' nome='CONTATOS' result='contato' %}
+    {% include 'partials/_modal_detalhes.html' with modal='enderecos' nome='ENDEREÇOS' result='endereco' %}
+
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        $(document).ready(function(){
+                
+            
+            if ($("#pagamento_id").val() !== 0){
+                $('#pagamento_id').val($('#data').attr('data-id'))
+                $('#fornecedor_id').val($('#fornecedor').attr('data-id'))
+            }
+
+            $("#pagamento_id").change(function(){
+                var data = $(this).val();
+                var cliente = $('#fornecedor_id').val();
+                if(cliente > 0){
+                    document.location.href ="/pagamentos_fornecedor/"+ cliente + "/" + data;
+                }
+                
+            });
+
+            $("#fornecedor_id").change(function(){
+                var cliente = $(this).val();
+                var data = $('#pagamento_id').val();
+                if(cliente > 0){
+                    document.location.href ="/pagamentos_fornecedor/"+ cliente + "/" + data;
+                }
+                
+            });
+        });
+
+    </script>
+{% endblock %}

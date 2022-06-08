@@ -1,0 +1,42 @@
+{% load static %}
+{% load materializecss %}
+{% load formata %}
+{% load render_table from django_tables2 %}
+{% load querystring from django_tables2 %}
+
+    <div class='container-fluid margin-2'>
+        {% render_table table %}
+    </div>
+
+{% block scripts %}
+
+<script> 
+
+    $(document).ready(function(){
+        $('.modal').modal();
+
+        $(".contato").click(function(){
+            var url = $(this).attr("data-id");
+            $(".loading").addClass('display-block');
+            $("#contatos").modal('open');
+            $('#contato_result').html('').load(url, function(){
+                $(".loading").removeClass('display-block').addClass('display-none')
+            });
+        });
+
+        $(".endereco").click(function(){
+            var url = $(this).attr("data-id");
+            $(".loading").addClass('display-block');
+            $("#enderecos").modal('open');
+            $('#endereco_result').html('').load(url, function(){
+                $(".loading").removeClass('display-block').addClass('display-none')
+            });
+        });
+
+      
+    });
+    
+ 
+</script>
+{% endblock %}
+

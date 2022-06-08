@@ -1,0 +1,44 @@
+
+{% extends 'layout/principal.html' %}
+{% load static %}
+{% load formata %}
+{% load materializecss %}
+{% load render_table from django_tables2 %}
+{% load querystring from django_tables2 %}
+{% block content %}
+
+    {% include 'partials/_voltar_pag.html'%}
+
+    <div class='row d-flex'>
+        {{form.paciente | materializecss:'input-field col s5'}}
+        <div class="d-flex justify-content-end ml-2">
+            {% include 'partials/_buscar.html' %}
+            {% include 'partials/_adicionar.html' with url=url_add %}
+        </div>
+    </div>
+    
+    <a id='paciente-id', data-id="{{ id_paciente }}"></a>
+    <div class='container-fluid margin-2'>
+        {% render_table table %}
+    </div>
+{% endblock %}
+
+
+{% block scripts %}
+    <script>
+    
+        if ($("#paciente_id").val() !== 0){
+            $('#paciente_id').val($('#paciente-id').attr('data-id'))
+        }
+
+        
+        $("#paciente_id").change(function(){
+            var cliente = $(this).val();
+            if(cliente > 0){
+                document.location.href ="/historico_prescricao/" + cliente;                   
+            }
+            
+        });
+
+    </script>
+{% endblock %}

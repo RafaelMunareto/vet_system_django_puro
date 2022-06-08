@@ -1,0 +1,24 @@
+{% extends 'layout/principal.html' %}
+{% load static %}
+{% load materializecss %}
+{% block content %}
+
+    {% include 'partials/_voltar_pag.html'%}
+
+    <div class='container'>
+
+        <form method='POST'  action="{% url url_action id %}">
+            {% csrf_token %} 
+            <div class='row'>
+                {{form.qtd_total | materializecss:'input-field col s2 mr-1 size90'}}  
+                {{form.valor_total | materializecss:'input-field coal s2 mr-1'}}           
+                {{form.pagamento | materializecss:'input-field coal s2 mr-1'}}           
+                <div class="input-field col s2">
+                    <input type='submit' class='btn {{ cor }} white-text bold ml-1 d-flex justify-content-center' name='btn_salvar' value='SALVAR' style='max-width:10rem'>
+                </div> 
+            </div>
+        </form>
+    </div>
+
+{% endblock %}
+    

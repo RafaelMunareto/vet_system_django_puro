@@ -1,0 +1,36 @@
+{% extends 'layout/principal.html' %}
+{% load static %}
+{% load materializecss %}
+{% block content %}
+
+    <div class="d-flex justify-content-between">
+        {% include 'partials/_voltar_pag.html'%}
+        {% include 'partials/_button.html' with url="fornecedores.adicionar" nome="NOVO FORNECEDOR" %}
+    </div>
+
+    <div class='container'>
+
+        <form method='POST'  action="{% url url_action %}">
+            {% csrf_token %} 
+            <div class='row'>
+                {{form.fornecedor_id | materializecss:'input-field col s11'}}
+            </div>
+            <div class='row'>
+                {{form.produto | materializecss:'input-field col s4 size90'}}
+                {{form.un_medida | materializecss:'input-field col s3'}} 
+                {{form.custo | materializecss:'input-field col s2'}}
+                {{form.venda | materializecss:'input-field col s2'}}      
+            </div>
+            <div class="row">
+                {{form.descricao | materializecss:'input-field col s11'}}  
+            </div>
+            <div class="row">
+                <div class="input-field col s2">
+                    <input type='submit' class='btn {{ cor }} white-text bold ml-1 d-flex justify-content-center' name='btn_salvar' value='SALVAR' style='max-width:10rem'>
+                </div> 
+            </div>
+        </form>
+    </div>
+
+{% endblock %}
+    

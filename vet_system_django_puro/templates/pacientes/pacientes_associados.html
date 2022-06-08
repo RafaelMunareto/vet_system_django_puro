@@ -1,0 +1,19 @@
+
+{% extends 'layout/principal.html' %}
+{% load static %}
+{% load render_table from django_tables2 %}
+{% load querystring from django_tables2 %}
+{% block content %}
+
+    {% include 'partials/_voltar_pag.html'%}
+    <div class='d-flex justify-content-end'> 
+        <a href="{% url 'produtos.adicionar' id %}" class="btn-floating waves-effect waves-light  {{ cor }} mr-1"><i class="fas fa-plus"></i></a>
+    </div>
+    <div class='container-fluid mb-4'>
+        {% render_table table %}
+    </div>
+
+    {% include 'partials/_confirmDelete.html' %}
+
+
+{% endblock %}

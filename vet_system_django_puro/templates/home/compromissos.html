@@ -1,0 +1,26 @@
+{% load static %}
+{% load formata %}
+
+<div class="row mt-4" id='compromissos'>
+    <span class="d-flex justify-content-start">
+        <img src="{% static 'img/icone_barra/time.png' %}" alt="">
+        <h6 class='ml-1 bold teal-text text-darken-3'>PRÓXIMOS COMPROMISSOS</h6>
+    </span>
+    <table>
+        {% for linha in compromissos %}
+            <tr class='size90'>
+                <td class='center'>
+                    <i class='fas fa-calendar fa teal-text mr-1'> {{linha.data | stringToData }}</i>
+                    <i class='fas fa-clock fa teal-text mr-1'> {{linha.time }}</i>
+                </td>
+                <td class='text-left bold'>{{linha.paciente | upper }}</td>
+                <td>{{linha.tipo | formata_tipo }}</td>
+                <td><a title='Detalhes'href="{% url 'agendamentos.editar' linha.id  %}"><i class='fas fa-info fa-lg teal-text mr-1 ml-1'></i></a></td>
+                <td><a title='Paciente'href="{% url 'pacientes.detalhes' linha.paciente.id  %}"><i class='fas fa-paw fa-lg teal-text mr-1 ml-1'></i></a></td>
+                <td><a title='Telefone tutor' href="{% url 'clientes.detalhes' linha.paciente.tutor.id  %}"><i class='fas fa-phone fa-lg teal-text mr-1'></i></a></td>
+                <td><a title='Alterar'href="{% url 'agendamentos.editar' linha.id  %}"><i class='fas fa-edit fa-lg teal-text mr-1'></i></a></td>
+                <td><a onclick="return confirm('Tem certeza que deseja deletar?')" href="{% url 'agendamentos.delete' linha.id  %}" ><i class='fas fa-trash fa-lg  red-text'></i></a></td>
+            </tr>
+        {% endfor %}
+    </table>
+</div>

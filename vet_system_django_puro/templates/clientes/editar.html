@@ -1,0 +1,41 @@
+{% extends 'layout/principal.html' %}
+{% load static %}
+{% load materializecss %}
+{% block content %}
+
+    {% include 'partials/_voltar_pag.html'%}
+
+    <div class='container'>
+
+        <form method='POST'  action="{% url url_action id %}">
+            {% csrf_token %} 
+            <div class='row'>
+                {{form.nome | materializecss:'input-field col s5 mr-1 size90'}}
+                {{form.cpf | materializecss:'input-field col s2 mr-1'}}
+                {{form.data_nascimento | materializecss:'input-field col s2 mr-1'}}
+                {{form.telefone_residencial | materializecss:'input-field col s2 mr-1'}}
+            </div>
+            <div class="row">
+                {{form.telefone_comercial | materializecss:'input-field col s2 mr-1'}}
+                {{form.telefone_celular | materializecss:'input-field col s2 mr-1'}}
+                {{form.email | materializecss:'input-field col s3 mr-1'}}
+                {{form.cep | materializecss:'input-field col s2 mr-1'}}
+                {{form.estado | materializecss:'input-field col s2 mr-1'}}
+            </div>
+            <div class="row">
+                {{form.cidade | materializecss:'input-field col s4 mr-1'}}
+                {{form.bairro | materializecss:'input-field col s3 mr-1'}}
+                {{form.endereco | materializecss:'input-field col s4 mr-1'}}
+            </div>
+            <div class="row">
+                {{form.numero | materializecss:'input-field col s2 mr-1'}}
+                {{form.complemento | materializecss:'input-field col s3 mr-1'}}
+                <div class="input-field col s2">
+                    <input type='submit' class='btn {{ cor }} white-text bold ml-1 d-flex justify-content-center' name='btn_salvar' value='SALVAR' style='max-width:10rem'>
+                </div> 
+            </div> 
+        </form>
+    </div>
+
+{% endblock %}
+    

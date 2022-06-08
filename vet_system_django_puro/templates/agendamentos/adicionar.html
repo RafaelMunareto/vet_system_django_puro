@@ -1,0 +1,37 @@
+{% extends 'layout/principal.html' %}
+{% load static %}
+{% load materializecss %}
+{% block content %}
+
+        
+    <div class='d-flex justify-beeteween'>
+        <a href="{% url 'agendamentos' 0 0 %}" class="btn-floating waves-effect waves-light {{ cor }} ml-1"><i class="fas fa-arrow-circle-left"></i></a>
+    </div>
+    
+    <div class='container'>
+        <div class="d-flex justify-content-center">
+            <form method='POST'  action="{% url url_action %}">
+                {% csrf_token %} 
+                <div class='row'>
+                    {% if id_paciente %}
+                        <input type="hidden" value='{{ id_paciente }}' name='paciente_id'>
+                    {% else %}
+                        {{form.paciente_id | materializecss:'input-field col s10'}}
+                    {% endif %}
+                </div>
+                <div class='row'>
+                    {{form.data | materializecss:'input-field col s4 mr-1 size90'}}
+                    {{form.time | materializecss:'input-field col s2 mr-1 size90'}}
+                    {{form.tipo | materializecss:'input-field col s4 mr-1'}}
+                </div>
+                <div class="row">
+                    {{form.obs | materializecss:'input-field col s8'}}
+                    <div class="input-field col s2">
+                        <input type='submit' class='btn {{ cor }} white-text bold d-flex justify-content-center' name='btn_salvar' value='SALVAR' style='max-width:10rem'>
+                    </div> 
+                </div>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}

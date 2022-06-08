@@ -1,0 +1,31 @@
+{% extends 'layout/principal.html' %}
+{% load static %}
+{% load materializecss %}
+{% block content %}
+
+    {% include 'partials/_voltar_pag_param.html'%}
+
+    <div class='container'>
+
+        <form method='POST'  action="{% url url_action %}">
+            {% csrf_token %} 
+            <div class='row'>
+                <input type="hidden" value='{{ id }}' name='cliente_id'>
+                {{form.nome | materializecss:'input-field col s5 mr-1 size90'}}
+                {{form.raca | materializecss:'input-field col s4 mr-1'}}
+                {{form.especie | materializecss:'input-field col s2'}}
+              
+            </div>
+            <div class="row">
+                {{form.sexo | materializecss:'input-field col s2 mr-1'}}
+                {{form.peso | materializecss:'input-field col s2 mr-1'}}
+                {{form.data_nascimento | materializecss:'input-field col s3 mr-1'}}
+                <div class="input-field col s2">
+                    <input type='submit' class='btn {{ cor }} white-text bold ml-1 d-flex justify-content-center' name='btn_salvar' value='SALVAR' style='max-width:10rem'>
+                </div> 
+            </div>
+        </form>
+    </div>
+
+{% endblock %}
+    

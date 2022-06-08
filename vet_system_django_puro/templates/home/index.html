@@ -1,0 +1,62 @@
+{% extends 'layout/base.html' %}
+{% load static %}
+{% load formata %}
+{% block content %}
+
+    <div class="row">
+        <div class='col s6'>
+            <div class="nav-wrapper">
+                <form>
+                  <div class="input-field" style='height: 4rem;'>
+                    <input id="search_paciente" type="search" class='transparent' style='height: fit-content;' placeholder='BUSCA PACIENTES' autocomplete="OFF" required>
+                    <label class="label-icon" for="search_paciente"><i class="material-icons teal-text">search</i></label>
+                    <i id='close_paciente' class="material-icons">close</i>
+                  </div>
+                </form>
+                <div id='paciente_result'></div>
+            </div>
+            <div class="d-flex justify-center">
+                <img id='img_favicon_big' src="{% static 'img/outros/favicon_big.png' %}" style='max-width:15rem' alt="VET SYSTEM">
+            </div>
+            {% include 'home/compromissos.html' %}
+        </div>     
+
+        <div class="col s6 d-flex flex-wrap mt-2">
+            {% for linha in urls_cards %}
+                {% include 'partials/_card.html' %}
+            {% endfor %}
+        </div> 
+        
+        {% include 'partials/_modal_detalhes.html' with modal='contatos' nome='CONTATOS' result='contato' %}            
+    </div>
+    
+{% endblock %}
+
+
+{% block scripts %}
+    <script>
+        $(document).ready(function(){
+            
+            $("#close_paciente").click(function(){
+                $('#search_paciente').val('')
+                $('#paciente_result').html('')
+                $('#img_favicon_big').addClass('display-block')
+                $('#compromissos').addClass('display-block');
+            });
+
+            $("#search_paciente").keyup(function(){
+                var search = this.value.replace(' ', '%20')
+                if(search == ''){
+                    $('#img_favicon_big').addClass('display-block')
+                    $('#compromissos').addClass('display-block');
+                    $('#paciente_result').html('')
+                }else if (search.length >=3){
+                    $('#paciente_result').html('').load("{% url 'busca_paciente' %}?search_paciente=" + search);
+                    $('#img_favicon_big').removeClass('display-block').addClass('display-none');
+                    $('#compromissos').removeClass('display-block').addClass('display-none');
+                }
+            });
+
+        });
+    </script>
+{% endblock %}

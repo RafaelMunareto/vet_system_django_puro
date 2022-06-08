@@ -1,0 +1,32 @@
+
+{% extends 'layout/principal.html' %}
+{% load static %}
+{% load formata %}
+{% load render_table from django_tables2 %}
+{% load querystring from django_tables2 %}
+{% block content %}
+
+    {% include 'partials/_voltar_pag.html'%}
+
+    <div class='justify-beeteween container-fluid'>
+        <div class='d-flex justify-content-end mb-1'>
+            <div class='mr-1'>
+                {% include 'partials/_buscar.html' %}
+            </div>
+            <div class='d-flex'> 
+                <a href="{% url 'pacientes' %}" class="btn-floating waves-effect waves-light  {{ cor }} mr-1"><i class="material-icons">pets</i></a>
+                {% include 'partials/_adicionar.html' with url=url_add %}
+                {% include 'partials/_export.html' %}
+            </div>
+        </div>
+    </div>
+  
+    <div class='container-fluid margin-2'>
+        {% render_table table %}
+    </div>
+
+    {% include 'partials/_modal_detalhes.html' with modal='contatos' nome='CONTATOS' result='contato' %}
+    {% include 'partials/_modal_detalhes.html' with modal='enderecos' nome='ENDEREÇOS' result='endereco' %}
+
+
+{% endblock %}

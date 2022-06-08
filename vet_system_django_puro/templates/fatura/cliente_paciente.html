@@ -1,0 +1,147 @@
+{% load static %}
+{% load formata %}
+{% load materializecss %}
+{% load render_table from django_tables2 %}
+{% load querystring from django_tables2 %}
+
+    <div class="d-flex justify-content-around">
+      
+        <div class="flex-column" style='min-width:100%; margin:1rem'>
+            <div class="card horizontal border-none">
+                <div class="card-image">
+                    <div class="d-flex teal lighten-5" style=' margin:1rem;'>
+                        <div class="card-panel mt-0 size90">
+                            <div class="row center">
+                                <span class="teal-text darken-2 bold center size120 padding-1">TUTOR</span>
+                            </div>
+                            {% for linha in paciente %}
+                                <div class='flex-column justify-content-start'>
+                                    <span>NOME: <span class='bold'>{{ linha.tutor | upper }}</span></span>
+                                    <span>CPF: <span class='bold'>{{ linha.tutor.cpf | upper }}</span></span>
+                                    <span>CELULAR: <span class='bold'>{{ linha.tutor.telefone_celular | upper }}</span></span>
+                                </div>
+                            {% endfor %}
+                            <div class="row mt-2 center">
+                                <span class="teal-text darken-2 bold center size120">PACIENTE</span>
+                            </div>
+                            {% for linha in paciente %}
+                            <div class="row">
+                                <div class='flex-column'>
+                                    <span>NOME: <span class='bold'>{{ linha.nome | upper }}</span></span>
+                                    <span>RAÇA: <span class='bold'>{{ linha.raca | upper}}</span></span>
+                                    <span>ESPÉCIE: <span class='bold'> {{ linha.especie | upper }}</span></span>
+                                    <span>NASCIMENTO: <span class='bold'>{{ linha.data_nascimento | upper }}</span></span>
+                                    <span>SEXO: <span class='bold'>{{ linha.sexo | upper }}</span></span>
+                                    <span>IDADE: <span class='bold'>{{ linha.idade | upper }}</span></span>
+                                    <span>PESO: <span class='bold'>{{ linha.peso | upper}} KG</span></span>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                <div class="card-stacked">
+                <div class="card-content mr-2" style='min-height:25rem'>
+                    <div class="row center">
+                        <div id='loading_table' class='display-none'>{% include 'partials/_loading.html' %}</div>
+                        <div class="row" id='table_fatura'>
+                            <div class="col s12">
+                                <div class="flex-column">
+                                    <h6 class="white-text teal bold pl-1 padding-05 mb-0">PRODUTOS</h6>
+                                    {% render_table tableProduto %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-action teal lighten-5">
+                        <span>Total: </span><span class='bold'> {{ total }}</span>
+                    </div>
+                    <h5 id='message_error_fechar' class='ml-2 white-text gradiente-red opacity-05 white-text center padding-05 mb-0 animated flipInX display-none border-radius-10'>
+                        <i class='fas  fa-exclamation-triangle'></i><span class='vertical-align--text-top'> NENHUM PRODUTO ADICIONADO ! </span></h5>
+                    <div class="d-flex justify-content-between mt-1">
+                        <a class='btn teal darken-2 white-text bold mr-1 col s2' id='historico'>HISTÓRICO</a>
+                        <div class="d-flex justify-content-end">
+                            <div id='loading_fechar' class='display-none'>{% include 'partials/_loading.html' %}</div>
+                            <a id='fechar_fatura' data-produto='{{ produto_id }}' data-total='{{ total }}' data-cadastro='{{ data_cadastro }}' class='btn teal darken-2 white-text bold ml-1' style='max-width:10rem'>FECHAR FATURA</a>
+                        </div>
+                    </div>
+                </div>
+            </div>                
+        </div>
+    
+    </div>
+
+    
+
+{% block scripts %}
+<script>
+    $(document).ready(function(){
+        
+
+        $('#historico').click(function(){
+            var cliente = $('#cliente').val();
+            if(cliente > 0){
+                document.location.href ="/historico_fatura/" + cliente;
+            }else{
+                document.location.href ="/historico_fatura/0";
+            }
+        });
+        
+
+        $('.btn_delete').click(function(){
+            var id = $(this).attr('data-id');
+            var cliente = $('#cliente').val();
+            const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+            var confirmation = confirm("Tem certeza que deseja excluir?");
+            if (confirmation){
+                $("#message_error_fechar").removeClass('display-block').addClass('display-none')
+                $("#message_error").removeClass('display-block').addClass('display-none')
+                $("#loading_table").removeClass('display-none').addClass('display-block')
+                $("#table_fatura").removeClass('display-block').addClass('display-none')
+                    $.ajax({
+                    url: id,
+                    headers: {'X-CSRFToken': csrftoken},
+                    type: 'POST',
+                    data: {
+                        'cliente':cliente
+                    }
+                }).done(function() {
+                    $("#message_error").removeClass('display-block').addClass('display-none')
+                    $('#paciente_result').load("fatura/cliente_paciente/"+cliente)
+                    $("#loading_table").removeClass('display-block').addClass('display-none')
+                });
+            }
+        });
+
+
+        $('#fechar_fatura').click(function(){
+            var cliente_id = parseInt($('#cliente').val());
+            var produto_id = $(this).attr('data-produto');
+            var data_cadastro = $(this).attr('data-cadastro');
+            var total = $(this).attr('data-total');
+            $("#loading_fechar").removeClass('display-none').addClass('display-block')
+            const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+            if (produto_id == 0){
+                $("#message_error_fechar").removeClass('display-none').addClass('display-block')
+            }else{
+                $.ajax({
+                    url: "{% url 'historico_fatura.store' %}",
+                    headers: {'X-CSRFToken': csrftoken},
+                    type: 'POST',
+                    data: {
+                        'cliente_id': cliente_id,
+                        'produto_id':produto_id,
+                        'total':total,
+                        'data_cadastro':data_cadastro
+                    }
+                }).done(function() {
+                    document.location.href ="/historico_fatura/" + cliente_id;
+                });  
+            }
+        });
+
+        
+    });
+
+</script>
+{% endblock %}
